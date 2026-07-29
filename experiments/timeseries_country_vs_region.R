@@ -3,8 +3,14 @@ library(plotly)
 library(dplyr)
 library(tidyr)
 
+# Busca data/ desde el wd actual o la carpeta de arriba (raíz o experiments/)
+find_data <- function(rel = "data/spi_index.csv") {
+  for (p in c(rel, file.path("..", rel))) if (file.exists(p)) return(p)
+  stop("No encuentro ", rel, ". Abre SPI_viz.Rproj o pon el wd en 'spi_viz/'.")
+}
+
 # Load data
-spi_index <- read.csv('data/spi_index.csv')
+spi_index <- read.csv(find_data('data/spi_index.csv'))
 
 # Transform to long format
 spi_long <- spi_index %>%

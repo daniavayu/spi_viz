@@ -8,7 +8,17 @@ library(ggplot2)
 # ============================================================
 # 1. Datos SPI (formato largo: un pilar por fila)
 # ============================================================
-spi_index <- read_csv("data/spi_index.csv", show_col_types = FALSE)
+# Busca data/spi_index.csv en el wd actual o en la carpeta de arriba
+# (funciona desde la raíz del proyecto o desde viz_functions/)
+find_data <- function(rel = "data/spi_index.csv") {
+  for (p in c(rel, file.path("..", rel))) {
+    if (file.exists(p)) return(p)
+  }
+  stop("No encuentro ", rel, ". Abre SPI_viz.Rproj o pon el working ",
+       "directory en la carpeta 'spi_viz/'.")
+}
+
+spi_index <- read_csv(find_data("data/spi_index.csv"), show_col_types = FALSE)
 
 spi_long <- spi_index %>%
   pivot_longer(

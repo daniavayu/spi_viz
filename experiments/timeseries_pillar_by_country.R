@@ -9,8 +9,14 @@ library(plotly)
 library(scales)
 library(spiR)
 
+# Busca data/ desde el wd actual o la carpeta de arriba (raíz o experiments/)
+find_data <- function(rel = "data/spi_index.csv") {
+  for (p in c(rel, file.path("..", rel))) if (file.exists(p)) return(p)
+  stop("No encuentro ", rel, ". Abre SPI_viz.Rproj o pon el wd en 'spi_viz/'.")
+}
+
 # 1) Load SPI data from local file
-spi <- read_csv("data/spi_index.csv", show_col_types = FALSE)
+spi <- read_csv(find_data("data/spi_index.csv"), show_col_types = FALSE)
 
 # 2) Prepare pillar data
 pillar_cols <- c("SPI.INDEX.PIL1", "SPI.INDEX.PIL2", "SPI.INDEX.PIL3", "SPI.INDEX.PIL4", "SPI.INDEX.PIL5")

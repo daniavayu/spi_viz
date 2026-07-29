@@ -64,7 +64,7 @@ grafico <- flourish(
 
 htmlwidgets::saveWidget(
   grafico,
-  "flourish/flourish_test.html",
+  file.path(if (dir.exists("flourish")) "flourish" else ".", "flourish_test.html"),
   selfcontained = TRUE
 )
 

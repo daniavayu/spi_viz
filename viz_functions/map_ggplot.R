@@ -6,6 +6,18 @@ library(sf)
 library(stringr)
 library(ggiraph)   # makes map interactive
 
+# ------------------------------------------------------------
+# Busca un archivo en data/ desde el wd actual o la carpeta de
+# arriba (funciona desde la raíz del proyecto o desde viz_functions/)
+# ------------------------------------------------------------
+find_data <- function(rel) {
+  for (p in c(rel, file.path("..", rel))) {
+    if (file.exists(p)) return(p)
+  }
+  stop("No encuentro ", rel, ". Abre SPI_viz.Rproj o pon el working ",
+       "directory en la carpeta 'spi_viz/'.")
+}
+
 # ============================================================
 # 1. WB oficial boundaries
 #    https://datacatalog.worldbank.org/search/dataset/0038272/
@@ -21,7 +33,7 @@ wb_boundaries_shp <- "WB_GAD_ADM0.shp"   # archivo dentro del zip
 load_wb_boundaries <- function(zip = wb_boundaries_zip,
                                shp = wb_boundaries_shp) {
   # ruta virtual: /vsizip/<ruta-absoluta-al-zip>/<archivo.shp>
-  vsi_path <- file.path("/vsizip", normalizePath(zip, winslash = "/"), shp)
+  vsi_path <- file.path("/vsizip", normalizePath(find_data(zip), winslash = "/"), shp)
   b <- sf::st_read(vsi_path, quiet = TRUE)
   
   # detecta automáticamente la columna con el código ISO3
@@ -55,7 +67,7 @@ world <- load_wb_boundaries()   # se carga una sola vez
 # ============================================================
 # 2. Datos SPI (índice principal)
 # ============================================================
-spi <- read_csv("data/spi_index.csv", show_col_types = FALSE) %>%
+spi <- read_csv(find_data("data/spi_index.csv"), show_col_types = FALSE) %>%
   transmute(
     iso3  = toupper(trimws(iso3c)),
     year  = as.integer(date),
@@ -152,4 +164,4 @@ create_spimap <- function(year,
 # ============================================================
 create_spimap(2016)                       
 create_spimap(2024, country = "CHL")   
-create_spimap(2024, country = c("CHL","ARG","PER","BOL"))  # región
+#create_spimap(2024, country = c("CHL","ARG","PER","BOL"))  # región

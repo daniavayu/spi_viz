@@ -36,7 +36,8 @@ if (!nzchar(API_KEY)) {
   stop("FLOURISH_API_KEY is not set. Add it to your .Renviron.")
 }
 
-OUTPUT_HTML <- "flourish/flourish_test.html"
+OUTPUT_HTML <- file.path(if (dir.exists("flourish")) "flourish" else ".",
+                         "flourish_test.html")
 
 
 # =========================================================
