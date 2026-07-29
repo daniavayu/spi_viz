@@ -1,0 +1,33 @@
+# ---- Datos (no subir al repo) ----
+data/
+*.csv
+*.zip
+
+# ---- Secretos / credenciales ----
+.Renviron
+.env
+# El HTML de Flourish embebe la API key -> NO subir
+flourish/flourish_test.html
+flourish_test.html
+
+# ---- R / RStudio ----
+.Rproj.user/
+.Rhistory
+.RData
+.RDataTmp
+.Ruserdata
+*.Rproj.bak
+
+# ---- Salidas generadas ----
+*.html
+*.pdf
+
+# ---- Sistema ----
+.DS_Store
+Thumbs.db
+__MACOSX/
+
+# ---- Python / notebooks ----
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
